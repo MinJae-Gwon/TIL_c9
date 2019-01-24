@@ -17,6 +17,14 @@ from django.contrib import admin
 from django.urls import path
 from pages import views
 urlpatterns = [
+    path('bootstrap/',views.bootstrap),
+    path('naver/',views.naver),
+    path('catch/',views.catch),
+    path('throw/',views.throw),
+    path('lol/<str:user_name>/',views.lol),
+    path('hi_dinner/<str:user>/',views.hi_dinner),
+    path('hello/<str:name>/',views.hello),
+    path('dinner/', views.dinner),
     path('index/', views.index),
     path('admin/', admin.site.urls),
 ]
