@@ -5,6 +5,12 @@ class Post(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
     
+    def __str__(self):
+        return self.title
+
+
+    
+        
 #1. Create
 #post = Post(ttle='Hello', content='World!')
 # post.save()
