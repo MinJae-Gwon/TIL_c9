@@ -7,14 +7,11 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Post Index</h1>
-    <a href="/posts/new/">new</a>
-    <ul>
-        {% for post in posts %}
-        <li><a href="/posts/{{post.pk}}/">{{post.title}}</a></li>
-        {% endfor %}
-    </ul>
-    
+    <form action='{% url 'posts:create' %}' method='post'>
+        {% csrf_token %}
+        <input type="text" name="title"/>
+        <input type="text" name="content"/>
+        <input type="submit" value="Submit"/>
+    </form>
 </body>
 </html>
-

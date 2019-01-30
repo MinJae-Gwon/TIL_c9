@@ -8,13 +8,12 @@
 </head>
 <body>
     <h1>Post Index</h1>
-    <a href="/posts/new/">new</a>
+    <a href="{% url 'posts:new' %}">new</a>
     <ul>
         {% for post in posts %}
-        <li><a href="/posts/{{post.pk}}/">{{post.title}}</a></li>
+        <li><a href="{% url 'posts:detail' post.pk %}">{{post.title}}</a></li>
         {% endfor %}
     </ul>
-    
+   
 </body>
 </html>
-
