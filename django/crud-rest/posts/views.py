@@ -3,15 +3,17 @@ from .models import Post,Comment
 # Create your views here.
 
 def new(request):
-    return render(request,'new.html')
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        image = request.FILES.get('image')
+        # DB INSERT
+        post = Post(title=title, content=content, image=image)
+        post.save()
+        return redirect('posts:detail', post.pk)
+    else:
+        return render(request,'new.html')
 
-def create(request):
-    title = request.POST.get('title')
-    content = request.POST.get('content')
-    # DB INSERT
-    post = Post(title=title, content=content)
-    post.save()
-    return redirect('posts:detail', post.pk)
     
 def index(request):
     #All Post
@@ -28,15 +30,26 @@ def naver(request, q):
     return redirect(f'https://search.naver.com/search.naver?query={q}')
     
 def delete(request, post_id):
-    #삭제하는 코드
-    post = Post.objects.get(pk=post_id)
-    post.delete()
-    return redirect('posts:list')
+    if request.method =='POST':
+        #삭제하는 코드
+        post = Post.objects.get(pk=post_id)
+        post.delete()
+        return redirect('posts:list')
+    else:
+        return render(request,'delete.html')
     
 def edit(request, post_id):
     post = Post.objects.get(pk=post_id)
-    return render(request, 'edit.html', {'post':post})
-    
+    if request.method == 'POST':
+        
+        post.title = request.POST.get('title')
+        post.content = request.POST.get('content')
+        post.save()
+        
+        return redirect('posts:detail', post.pk)
+    else:    
+        return render(request, 'edit.html', {'post':post})
+        
 def update(request, post_id):
     #수정하는 코드
     post = Post.objects.get(pk=post_id)
@@ -65,12 +78,4 @@ def comments_delete(request, post_id, comment_id):
     comment.delete()
     return redirect('posts:detail',post_id)
     
-def comments_create(request, post_id):
-    post = Post.objects.get(pk=post_id)
-    
-    content = request.POST.get('content')
-    
-    comment = Comment(post=post, content=content)
-    comment.save()
-    
-    return redirect('posts:detail', post.pk)
+
