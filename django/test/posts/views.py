@@ -1,57 +1,50 @@
 from django.shortcuts import render, redirect
-from .models import Post, Comment
+from .models import Post
 # Create your views here.
+
+
+
+
 def new(request):
-    return render(request, 'new.html')
-    
+    return render(request,'new.html')
+
 def create(request):
     title = request.POST.get('title')
     content = request.POST.get('content')
+    # DB INSERT
     post = Post(title=title, content=content)
     post.save()
-    
-    return redirect(f'posts:detail', post.pk)
+    return redirect(f'/posts/{post.pk}/')
     
 def index(request):
+    #All Post
     posts = Post.objects.all()
+    
     return render(request, 'index.html', {'posts':posts})
     
-def detail(request,post_id):
+
+def detail(request, post_id):
     post = Post.objects.get(pk=post_id)
-    return render(request, 'detail.html', {'post':post})
+    return render(request,'detail.html', {'post': post})
     
-def delete(request,post_id):
+def naver(request, q):
+    
+    return redirect(f'https://search.naver.com/search.naver?query={q}')
+    
+def delete(request, post_id):
+    #삭제하는 코드
     post = Post.objects.get(pk=post_id)
     post.delete()
-    return  redirect('posts:list')
+    return redirect('/posts/')
     
-
 def edit(request, post_id):
     post = Post.objects.get(pk=post_id)
     return render(request, 'edit.html', {'post':post})
     
 def update(request, post_id):
+    #수정하는 코드
     post = Post.objects.get(pk=post_id)
     post.title = request.POST.get('title')
     post.content = request.POST.get('content')
     post.save()
-    
     return redirect(f'/posts/{post_id}/')
-    
-def comments_create(request, post_id):
-    post = Post.objects.get(pk=post_id)
-    
-    content = request.POST.get('content')
-    
-    comment = Comment(post=post, content=content)
-    comment.save()
-    
-    return redirect('posts:detail', post.pk)
-    
-
-def throw(request):
-    return render(request,'throw.html')
-
-def catch(request):
-    message = request.GET.get('message')
-    return render(request, 'catch.html', {'message':message})

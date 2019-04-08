@@ -12,5 +12,7 @@ urlpatterns = [
     path('', views.index, name='list'),
     path('create/', views.create, name = 'create'),
     path('new/', views.new, name='new'),
+    path('throw/',views.throw, name='throw'),
+    path('catch/',views.catch, name='catch'),
    
 ]
