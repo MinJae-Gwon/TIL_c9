@@ -1,15 +1,17 @@
 {% extends 'base.html' %}
-
+<!--bootstrap form-->
 {% load bootstrap4 %}
 
 {% block container %}
 
 <h1>New Post</h1>
-
-<form method="post">
+<!--이미지를 올릴 때 entype 작성 필요-->
+<form method="post" enctype='multipart/form-data'>
     {% csrf_token %}
-    <!-- bootstrap template-->
-    {% bootstrap_form post_form %}
+    <!-- bootstrap template을 이용하려면 {}*2이 아닌 아래 양식 사용 -->
+    
+    <!--{% bootstrap_form post_form %}-->
+    {{ post_form }}
     {% buttons %}
         <button type='submit' class='btn btn-primary'>Submit</button>
     {% endbuttons %}

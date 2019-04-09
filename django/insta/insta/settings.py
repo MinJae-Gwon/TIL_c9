@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # pip install django-bootstrap4
     'bootstrap4',
+    #이미지 resize
+    'imagekit',
     #앱 이름으로만 써도됨
     #'posts.app.PostsConfig'
     'posts',
@@ -123,3 +125,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+#Media 사진 올리려면 작성
+MEDIA_URL = '/media/'
+#BASE_DIR => insta 프로젝트, 'media' => media 폴더
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
