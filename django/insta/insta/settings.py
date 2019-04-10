@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'bootstrap4',
     #이미지 resize
     'imagekit',
+    #로그인 app
+    'accounts',
     #앱 이름으로만 써도됨
     #'posts.app.PostsConfig'
     'posts',
