@@ -9,9 +9,10 @@
 <form method="post" enctype='multipart/form-data'>
     {% csrf_token %}
     <!-- bootstrap template을 이용하려면 {}*2이 아닌 아래 양식 사용 -->
-    
+    {% bootstrap_form post_form %}
+    {{image_formset.as_p}}
     <!--{% bootstrap_form post_form %}-->
-    {{ post_form }}
+    
     {% buttons %}
         <button type='submit' class='btn btn-primary'>Submit</button>
     {% endbuttons %}

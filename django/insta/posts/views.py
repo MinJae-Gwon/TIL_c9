@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_http_methods
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, ImageFormSet
 from .models import Post, Comment
-
+from django.db import transaction
 
 def list(request):
     posts = Post.objects.order_by('-id').all()
@@ -17,16 +17,23 @@ def create(request):
     if request.method == 'POST':
         #순서 중요 POST가 앞, FLIES가 뒤
         #data = request.POST, file = request.FILES 생략 되있는 형태지만 자리 맞추면 인자가 고대로 들어감
-        post_form = PostForm(request.POST, request.FILES)
-        if post_form.is_valid():
+        post_form = PostForm(request.POST)
+        image_formset = ImageFormSet(request.POST, request.FILES)
+        if post_form.is_valid() and image_formset.is_valid():
             post = post_form.save(commit=False)
             post.user = request.user
-            post.save() # 실제 데이터베이스에 저장
+            with transaction.atomic():
+                #첫번째
+                post.save() # 실제 데이터베이스에 저장
+                #두번째
+                image_formset.instance = post
+                image_formset.save()  # 실제 데이터베이스에 저장
+            
             return redirect('posts:list')
     else:
         post_form = PostForm()
-    
-    return render(request, 'posts/form.html', {'post_form': post_form})
+        image_formset = ImageFormSet()
+    return render(request, 'posts/form.html', {'post_form': post_form, 'image_formset':image_formset})
 
 
 @login_required
@@ -37,13 +44,16 @@ def update(request, post_id):
         return redirect('posts:list')
     
     if request.method == 'POST':
-        post_form = PostForm(request.POST, request.FILES, instance=post)
-        if post_form.is_valid():
+        post_form = PostForm(request.POST, instance=post)
+        image_formset = ImageFormSet(request.POST, request.FILES, instance=post)
+        if post_form.is_valid() and image_formset.is_valid():
             post_form.save()
+            image_formset.save()
             return redirect('posts:list')
     else:
         post_form = PostForm(instance=post)
-    return render(request, 'posts/form.html',{'post_form': post_form})
+        image_formset = ImageFormSet(instance=post)
+    return render(request, 'posts/form.html',{'post_form': post_form, 'image_formset':image_formset})
 
 @login_required
 #삭제

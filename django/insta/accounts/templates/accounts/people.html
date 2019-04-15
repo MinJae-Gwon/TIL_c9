@@ -6,10 +6,15 @@
 
 <div class='container'>
     <h1>{{ people.username }}</h1>
+    {% if user == people %}
+    <div>
+        <a href="{% url 'accounts:update' %}">계정정보 수정</a>
+    </div>
+    {% endif %}
     <div class='row'>
         {% for post in people.post_set.all %}
-        <div>
-            <img src="{{ post.image.url }}" class='img-fluid'/>
+        <div class="col-4">
+            <img src="{{ post.image_set.first.file.url }}" class='img-fluid'/>
         </div>
         {% endfor %}
     </div>
