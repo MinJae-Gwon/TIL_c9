@@ -133,3 +133,6 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 #BASE_DIR => insta 프로젝트, 'media' => media 폴더
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Auth User Model
+AUTH_USER_MODEL = 'accounts.User'

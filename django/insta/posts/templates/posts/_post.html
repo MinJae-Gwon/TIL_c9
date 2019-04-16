@@ -1,6 +1,9 @@
 
   <div class="card mb-5 mt-5" style="width: 350px height: 400px;">
     <div class="card-header">
+      {% if post.user.profile.image %}
+      <img src="{{post.user.profile.image}}">
+      {% endif %}
       <span>{{post.user.username}}</span>
     </div>
       <div id="post_{{ post.id }}" class="carousel slide" data-ride="carousel">

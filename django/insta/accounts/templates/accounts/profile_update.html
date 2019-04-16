@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% load bootstrap4 %}
+
+{% block container %}
+
+<h1>Profile Edit</h1>
+
+<form method='POST' entype="multipart/form-data">
+    {%csrf_token%}
+    {% bootstrap_form profile_form %}
+    
+    <input type="submit" value="Submit"/>
+</form>
+
+{% endblock %}
