@@ -5,6 +5,7 @@ from .forms import PostForm, CommentForm, ImageFormSet
 from .models import Post, Comment
 from django.db import transaction
 from itertools import chain
+from django.http import JsonResponse
 
 def explore(request):
     posts = Post.objects.order_by('-id').all()
@@ -113,8 +114,12 @@ def like(request, post_id):
     if request.user in post.like_users.all():
         # 2. 좋아요 취소
         post.like_users.remove(request.user)
+        liked=False
     else:
         # 1. 좋아요!
         post.like_users.add(request.user)
+        liked=True
     
-    return redirect('posts:list')
+    # return redirect('posts:list')
+    # import 필요!
+    return JsonResponse({'liked':liked, 'count':post.like_users.count()})

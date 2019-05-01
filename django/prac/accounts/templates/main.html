@@ -7,12 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>NEW</h1>
-    <form action="/posts/create/" method='POST'>
-        {% csrf_token %}
-        <input type="text" name="title"/>
-        <input type="text" name="content"/>
-        <input type="submit" value="Submit"/>
-    </form>
+    <h1>MAIN</h1>
+    {{user.username}}
 </body>
 </html>
