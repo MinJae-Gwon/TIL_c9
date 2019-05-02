@@ -32,6 +32,33 @@
                 })
         })
     })
+    
+    
+    const commentForms = document.querySelectorAll('.comment-form')
+    commentForms.forEach(function(form){ //forEach 돌면서 form 하나씩 인자로 들어옴
+        form.addEventListener('submit', function(event){ 
+            event.preventDefault()
+            console.log(event)
+            // event.target === form, form이 외곽에 인자로 들어오긴 해서 사용할 수 있지만 event 위주로 사용할 거임
+            const data = new FormData(event.target) // FormData는 class
+            //Inspect formData
+            // for (const item of data.entries()){
+            //     console.log(item)
+            // }
+            axios.post(event.target.action, data) //form tag의 action에 해당하는 값을 가져옴
+              .then(function(response){
+            console.log(response)
+            const comment = response.data
+            const commentList = document.querySelector(`#comment-list-${comment.postId}`)
+            const newComment = `<div class="card-text">
+              <strong>${ comment.username }</strong> ${ comment.content }
+              <a href="/posts/${comment.postId}/comments/${comment.id}/delete/">delete</a>
+            </div>`
+            commentList.insertAdjacentHTML('beforeend', newComment)
+            event.target.reset() //댓글 작성하고 댓글창 안에 없애기
+        })
+    })
+    })
 </script>
 
 {% endblock %}
